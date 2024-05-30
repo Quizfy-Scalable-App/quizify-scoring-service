@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const quizRoutes = require('./routes/quiz');
 const config = require('./config/config');
 const joinRoutes = require('./routes/join');
-
+const cors = require("cors");
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use('/api/quiz', quizRoutes);
