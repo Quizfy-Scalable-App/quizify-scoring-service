@@ -15,6 +15,7 @@ router.post('/create', auth, async (req, res) => {
   try {
     const quiz = new Quiz({ user: userId, title, startTime, endTime });
     await quiz.save();
+    console.log(quiz);
 
     res.status(201).json(quiz);
   } catch (err) {
