@@ -17,5 +17,6 @@ mongoose.connect(config.mongoURI).then(() => {
   process.exit(1);
 });
 
-const PORT = process.env.PORT || 5007;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Quiz Service started on port ${PORT}`));
+
