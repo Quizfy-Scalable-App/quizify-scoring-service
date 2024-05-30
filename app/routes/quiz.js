@@ -15,7 +15,6 @@ router.post('/create', auth, async (req, res) => {
   try {
     const quiz = new Quiz({ user: userId, title, startTime, endTime });
     await quiz.save();
-    console.log(quiz);
 
     res.status(201).json(quiz);
   } catch (err) {
@@ -49,9 +48,10 @@ router.post('/:quizId/question', auth, async (req, res) => {
 });
 
 // Mendapatkan Kuis oleh User
-router.get('/user/:userId', async (req, res) => {
+router.get('/user/', auth, async (req, res) => {
+  const userId = req.user.id;
   try {
-    const quizzes = await Quiz.find({ user: req.params.userId });
+    const quizzes = await Quiz.find({ user: userId });
     res.json(quizzes);
   } catch (err) {
     console.error(err.message);
