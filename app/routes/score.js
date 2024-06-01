@@ -21,30 +21,52 @@ router.post("/grade", async (req, res) => {
       `https://quizify-quiz-service.vercel.app/api/quiz/questions/${quizId}`
     );
     const questions = questionsRes.data;
-
     // Hitung nilai
-    let score = 0;
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    const totalQuestions = questions.length;
+
     for (let answer of answers) {
       const question = questions.find((q) => q._id === answer.questionId);
       if (question) {
-        const correctChoice = question.choices.find(
-          (choice) => choice.isCorrect
-        );
+        const correctChoice = question.choices.find((choice) => choice.isCorrect);
         if (correctChoice && correctChoice._id === answer.choiceId) {
-          score += 1;
+          correctAnswers += 1;
+        } else {
+          wrongAnswers += 1;
         }
       }
     }
+
+    const score =(correctAnswers / totalQuestions) * 100;
 
     // Simpan nilai ke database
     const newScore = new Score({
       user: userId,
       quizId: quizId,
+      answerId: answerId,
       score: score,
+      correctAnswers: correctAnswers,
+      wrongAnswers: wrongAnswers,
+      totalQuestions: totalQuestions,
     });
 
     await newScore.save();
     res.json(newScore);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+// Mendapatkan skor dari answerid
+router.get("/answer/:answerId", async (req, res) => {
+  const { answerId } = req.params;
+  try {
+    const score = await Score
+      .findOne({ answerId })
+    res.json(score);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

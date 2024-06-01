@@ -13,6 +13,23 @@ const ScoreSchema = new Schema({
     ref: 'Quiz',
     required: true,
   },
+  answerId : {
+    type: Schema.Types.ObjectId,
+    ref: 'Answer',
+    required: true,
+  },
+  correctAnswers: {
+    type: Number,
+    required: true
+  },
+  wrongAnswers: {
+    type: Number,
+    required: true
+  },
+  totalQuestions: {
+    type: Number,
+    required: true
+  },
   score: {
     type: Number,
     required: true,
