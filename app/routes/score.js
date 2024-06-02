@@ -90,7 +90,7 @@ router.get("/ranking/:quizId", async (req, res) => {
             `https://quizify-auth-service.vercel.app/api/auth/user/${score.user}`
           );
           const user = response.data;
-          return { name: user.name, score: score.score };
+          return { name: user.name, score: score.score, answerId: score.answerId};
         } catch (err) {
           console.error(
             `Error fetching user data for userId: ${score.user}`,

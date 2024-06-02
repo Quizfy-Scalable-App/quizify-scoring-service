@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 const config = require('./config/config');
 const cors = require("cors");
 const scoreRoutes = require('./routes/score');
-
 const app = express();
-app.use(cors())
-app.use(express.json());
 
+app.use(cors())
+
+app.use(express.json());
 // Routes
 app.use('/api/score', scoreRoutes);
 
