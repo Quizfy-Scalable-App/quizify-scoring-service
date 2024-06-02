@@ -2,6 +2,7 @@
 const express = require("express");
 const axios = require("axios");
 const Score = require("../models/Score");
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -107,5 +108,39 @@ router.get("/ranking/:quizId", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// mendapatkan semua skor quiz yang diikuti user, berdasarkan userId yang didapat dari token dan dapatkan nama quiz dari quizid
+router.get("/user/", auth, async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const scores = await Score.find({ user: userId }).sort({
+      createdAt: -1,
+    });
+
+    const scoreList = await Promise.all(
+      scores.map(async (score) => {
+        try {
+          const response = await axios.get(
+            `https://quizify-quiz-service.vercel.app/api/quiz/${score.quizId}`
+          );
+          const quiz = response.data;
+          return { quiz: quiz.title, score: score.score, answerId: score.answerId, createdAt: score.createdAt};
+        } catch (err) {
+          console.error(
+            `Error fetching quiz data for quizId: ${score.quizId}`,
+            err
+          );
+          return { quiz: "Unknown Quiz", score: score.score };
+        }
+      })
+    );
+
+    res.json(scoreList);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 
 module.exports = router;
