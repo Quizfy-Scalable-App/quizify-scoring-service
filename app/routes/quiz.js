@@ -84,18 +84,26 @@ router.get('/code/:code', async (req, res) => {
   }
 });
 
-// get quiz and questions by id, menambahkan data questions ke kuis yang berisi array questions
+// get quiz by id
 router.get('/:id', async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
-    const showQuiz = quiz.toObject();
     if (!quiz) {
       return res.status(404).json({ msg: 'Quiz not found' });
     }
-    const questions = await Question.find({ quizId: req.params.id });
-    showQuiz.questions = questions;
-    console.log(showQuiz);
-    res.json(showQuiz);
+    res.json(quiz);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// Mendapatkan semua pertanyaan untuk kuis tertentu
+router.get('/questions/:quizId', async (req, res) => {
+  try {
+    const questions = await Question.find({ quizId: req.params.quizId });
+    res.json(questions);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -140,16 +148,26 @@ router.get('/answer/:id', async (req, res) => {
   }
 });
 
-// Mendapatkan semua pertanyaan untuk kuis tertentu
-router.get('/questions/:quizId', async (req, res) => {
+
+
+// get quiz and questions by id, menambahkan data questions ke kuis yang berisi array questions
+router.get('/:id', async (req, res) => {
   try {
-    const questions = await Question.find({ quizId: req.params.quizId });
-    res.json(questions);
+    const quiz = await Quiz.findById(req.params.id);
+    const showQuiz = quiz.toObject();
+    if (!quiz) {
+      return res.status(404).json({ msg: 'Quiz not found' });
+    }
+    const questions = await Question.find({ quizId: req.params.id });
+    showQuiz.questions = questions;
+    console.log(showQuiz);
+    res.json(showQuiz);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
+
 
 
 module.exports = router;
