@@ -151,7 +151,7 @@ router.get('/answer/:id', async (req, res) => {
 
 
 // get quiz and questions by id, menambahkan data questions ke kuis yang berisi array questions
-router.get('/:id', async (req, res) => {
+router.get('/quiz-questions/:id', async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     const showQuiz = quiz.toObject();
@@ -160,7 +160,6 @@ router.get('/:id', async (req, res) => {
     }
     const questions = await Question.find({ quizId: req.params.id });
     showQuiz.questions = questions;
-    console.log(showQuiz);
     res.json(showQuiz);
   } catch (err) {
     console.error(err.message);
