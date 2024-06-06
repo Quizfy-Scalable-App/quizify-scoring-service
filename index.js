@@ -2,9 +2,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const config = require('./config/config');
+const config = require('./app/config/config');
 const cors = require("cors");
-const scoreRoutes = require('./routes/score');
+const scoreRoutes = require('./app/routes/score');
 const app = express();
 
 app.use(cors())

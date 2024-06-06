@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app/index.js",
+    "start": "node index.js",
     "dev": "nodemon -V",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles"
   },
