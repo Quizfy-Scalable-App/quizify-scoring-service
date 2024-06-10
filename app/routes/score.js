@@ -12,14 +12,14 @@ router.post("/grade", async (req, res) => {
 
   try {
     const answerRes = await axios.get(
-      `https://quizify-quiz-service.vercel.app/api/quiz/answer/${answerId}`
+      `http://localhost:8001/api/quiz/answer/${answerId}`
     );
     const answerItem = answerRes.data;
     const answers = answerItem.answers;
 
     // Ambil pertanyaan kuis
     const questionsRes = await axios.get(
-      `https://quizify-quiz-service.vercel.app/api/quiz/questions/${quizId}`
+      `http://localhost:8001/api/quiz/questions/${quizId}`
     );
     const questions = questionsRes.data;
     // Hitung nilai
@@ -88,7 +88,7 @@ router.get("/ranking/:quizId", async (req, res) => {
       scores.map(async (score) => {
         try {
           const response = await axios.get(
-            `https://quizify-auth-service.vercel.app/api/auth/user/${score.user}`
+            `http://localhost:8001/api/auth/user/${score.user}`
           );
           const user = response.data;
           return { name: user.name, score: score.score, answerId: score.answerId};
@@ -121,7 +121,7 @@ router.get("/user/", auth, async (req, res) => {
       scores.map(async (score) => {
         try {
           const response = await axios.get(
-            `https://quizify-quiz-service.vercel.app/api/quiz/${score.quizId}`
+            `http://localhost:8001/api/quiz/${score.quizId}`
           );
           const quiz = response.data;
           return { quiz: quiz.title, score: score.score, answerId: score.answerId, createdAt: score.createdAt};
