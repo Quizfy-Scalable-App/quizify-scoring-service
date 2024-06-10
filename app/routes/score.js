@@ -11,6 +11,8 @@ router.post("/grade", async (req, res) => {
   const { answerId, quizId, userId } = req.body;
 
   try {
+    console.log(quizId);
+
     const answerRes = await axios.get(
       `http://localhost:8001/api/quiz/answer/${answerId}`
     );
@@ -55,7 +57,7 @@ router.post("/grade", async (req, res) => {
     await newScore.save();
     res.json(newScore);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).send("Server Error");
   }
 });

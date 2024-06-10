@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon -V",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
